@@ -1,8 +1,10 @@
 # Sistema-completo-de-gerenciamento-de-seguran-a-e-controle-de-acesso.
 Sistema completo de gerenciamento de segurança e controle de acesso para as Indústrias Wayne, desenvolvido com Flask no backend e JavaScript vanilla no frontend.
 
+<img width="894" height="922" alt="image" src="https://github.com/user-attachments/assets/5f6a8e00-f4b0-430a-8497-e69f5ee1cafe" />
 
 <img width="930" height="905" alt="image" src="https://github.com/user-attachments/assets/fcda76af-7e67-4771-80d9-6646e6c47ddb" />
+
 
 🦇 Wayne Industries - Sistema de Segurança
 
@@ -27,7 +29,8 @@ Desenvolvimento
 
 Contribuição
 
-<img width="930" height="905" alt="image" src="https://github.com/user-attachments/assets/9ccde0cf-8cbb-4a61-a1ab-57d0216482cd" />
+<img width="931" height="608" alt="image" src="https://github.com/user-attachments/assets/8d46873f-0ac8-46aa-a198-f1455903e897" />
+
 
 🎯 Visão Geral
 O Sistema Wayne Industries é uma plataforma de segurança corporativa que oferece:
@@ -52,6 +55,7 @@ Logout automático
 
 Proteção de rotas
 
+
 🛡️ Controle de Acesso
 Áreas Restritas com permissões granulares
 
@@ -68,6 +72,10 @@ Admin de Segurança
 Gerente
 
 Funcionário
+
+<img width="436" height="498" alt="image" src="https://github.com/user-attachments/assets/eb3bbd40-459a-4274-a41c-52a9a7170ab3" />
+
+
 
 📦 Gestão de Recursos
 CRUD completo de recursos internos
@@ -86,6 +94,9 @@ Visualização de recursos acessíveis
 Painel administrativo condicional
 
 Design responsivo
+
+<img width="912" height="912" alt="image" src="https://github.com/user-attachments/assets/2b20aae8-cbf7-47d5-8529-b6655bbfcddd" />
+
 
 🛠 Tecnologias
 Backend
@@ -294,3 +305,11 @@ Problemas de CORS
 Verifique se Flask-CORS está instalado
 
 Confirme as configurações no app.py
+
+<img width="916" height="920" alt="image" src="https://github.com/user-attachments/assets/7cfafa1c-d8c5-45ba-a1dd-f5ae33343577" />
+
+<img width="832" height="671" alt="image" src="https://github.com/user-attachments/assets/69a404cc-cee7-4bcc-98c8-ba273abcf02f" />
+
+
+
+
