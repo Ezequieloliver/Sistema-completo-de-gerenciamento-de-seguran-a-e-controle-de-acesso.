@@ -1,0 +1,668 @@
+/* ===============================
+   🦇 Wayne Industries - Estilos Gerais
+================================== */
+:root {
+    --wayne-blue: #0A192F;
+    --wayne-yellow: #FFD700;
+    --text-light: #E6E6FA;
+    --bg-light: #FFFFFF;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --card-bg: rgba(255, 255, 255, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+    color: var(--text-light);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* ===============================
+   🦇 HEADER - Dashboard
+================================== */
+header {
+    background-color: rgba(10, 25, 47, 0.9);
+    border-bottom: 2px solid var(--wayne-yellow);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+header h1 {
+    font-size: 1.8em;
+    color: var(--wayne-yellow);
+}
+
+#logout {
+    background: #d32f2f;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+#logout:hover {
+    background: #b71c1c;
+}
+
+/* ===============================
+   🦇 DASHBOARD LAYOUT
+================================== */
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    padding: 0 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    box-shadow: var(--shadow);
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h2 {
+    color: var(--wayne-yellow);
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+    padding-bottom: 0.5rem;
+    font-size: 1.3em;
+}
+
+/* ===============================
+   🦇 STATUS DE SEGURANÇA
+================================== */
+.status {
+    color: #4caf50;
+    font-weight: bold;
+    font-size: 1.1em;
+    padding: 0.5rem;
+    background: rgba(76, 175, 80, 0.1);
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* ===============================
+   🦇 LISTA DE RECURSOS
+================================== */
+#resource-list {
+    list-style: none;
+}
+
+#resource-list li {
+    padding: 0.8rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#resource-list li:last-child {
+    border-bottom: none;
+}
+
+/* ===============================
+   🦇 LOGS DE ATIVIDADE
+================================== */
+#logs {
+    list-style: none;
+}
+
+#logs li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.9em;
+    color: #ccc;
+}
+
+#logs li:last-child {
+    border-bottom: none;
+}
+
+/* ===============================
+   🦇 FOOTER
+================================== */
+footer {
+    text-align: center;
+    padding: 2rem;
+    margin-top: 3rem;
+    background: rgba(10, 25, 47, 0.8);
+    border-top: 1px solid rgba(255, 215, 0, 0.3);
+    color: #aaa;
+}
+
+/* ===============================
+   🦇 TELA DE LOGIN (mantida do seu CSS original)
+================================== */
+body.login-page {
+    background-color: #0a0a0a;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #e0e0e0;
+    margin: 0;
+}
+
+.login-container {
+    background-color: #1b1b1b;
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 0 20px #00bcd4a0;
+    width: 320px;
+}
+
+.login-container h1 {
+    color: #00bcd4;
+    margin-bottom: 10px;
+}
+
+.login-container h2 {
+    color: #aaa;
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 8px;
+    background-color: #222;
+    color: white;
+    font-size: 14px;
+}
+
+.login-container button {
+    background-color: #00bcd4;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    width: 100%;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.login-container button:hover {
+    background-color: #0097a7;
+}
+
+.mensagem {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* ===============================
+   🦇 PAINEL ADMINISTRATIVO
+================================== */
+#admin-panel {
+    text-align: center;
+    margin: 2rem auto;
+    max-width: 1200px;
+    padding: 0 2rem;
+}
+
+.admin-btn {
+    background: linear-gradient(135deg, #FFD700, #FFA000);
+    color: #0A192F;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+.admin-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+}
+
+/* ===============================
+   🦇 MODAL DE GERENCIAMENTO
+================================== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    margin: 5% auto;
+    padding: 2rem;
+    border-radius: 15px;
+    border: 2px solid var(--wayne-yellow);
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    color: white;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: var(--wayne-yellow);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    margin: 1.5rem 0;
+    justify-content: center;
+}
+
+.modal-actions button {
+    background: var(--wayne-blue);
+    color: var(--wayne-yellow);
+    border: 1px solid var(--wayne-yellow);
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.modal-actions button:hover {
+    background: var(--wayne-yellow);
+    color: var(--wayne-blue);
+}
+
+/* ===============================
+   🦇 FORMULÁRIO DE RECURSOS
+================================== */
+#resource-form {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin: 1rem 0;
+}
+
+#resourceForm input, #resourceForm select {
+    width: 100%;
+    padding: 0.8rem;
+    margin: 0.5rem 0;
+    border: 1px solid #444;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+#resourceForm input::placeholder {
+    color: #ccc;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.form-buttons button {
+    flex: 1;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.form-buttons button[type="submit"] {
+    background: var(--wayne-yellow);
+    color: var(--wayne-blue);
+}
+
+.form-buttons button[type="button"] {
+    background: #666;
+    color: white;
+}
+
+/* ===============================
+   🦇 LISTA DE RECURSOS DO ADMIN
+================================== */
+#admin-resource-list {
+    list-style: none;
+    margin-top: 1rem;
+}
+
+#admin-resource-list li {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+    border-left: 4px solid var(--wayne-yellow);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.resource-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.resource-actions button {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8em;
+}
+
+.btn-edit {
+    background: #2196F3;
+    color: white;
+}
+
+.btn-delete {
+    background: #f44336;
+    color: white;
+}
+
+/* ===============================
+   🦇 MÉTRICAS DO DASHBOARD
+================================== */
+#metrics-container {
+    margin-top: 1rem;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.metric-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.metric-card h3 {
+    color: var(--wayne-yellow);
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+    padding-bottom: 0.5rem;
+}
+
+.metric-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.metric-item:last-child {
+    border-bottom: none;
+}
+
+.metric-label {
+    font-size: 0.9em;
+    color: #ccc;
+}
+
+.metric-value {
+    font-weight: bold;
+    color: var(--wayne-yellow);
+}
+
+.metric-value.success {
+    color: #4CAF50;
+}
+
+.metric-value.warning {
+    color: #FF9800;
+}
+
+.metric-value.danger {
+    color: #F44336;
+}
+
+/* ===============================
+   🦇 ATIVIDADES RECENTES
+================================== */
+.recent-activities {
+    margin-top: 1.5rem;
+}
+
+.recent-activities h3 {
+    color: var(--wayne-yellow);
+    margin-bottom: 1rem;
+}
+
+#activities-list {
+    list-style: none;
+}
+
+.activity-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    border-left: 4px solid var(--wayne-yellow);
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-content strong {
+    color: var(--wayne-yellow);
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.activity-action {
+    color: #e0e0e0;
+    display: block;
+    font-size: 0.9em;
+}
+
+.activity-time {
+    color: #888;
+    font-size: 0.8em;
+}
+
+.activity-badge {
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.activity-badge.acesso {
+    background: #4CAF50;
+    color: white;
+}
+
+.activity-badge.manutencao {
+    background: #FF9800;
+    color: white;
+}
+
+.activity-badge.alerta {
+    background: #F44336;
+    color: white;
+}
+
+/* ===============================
+   🦇 MÉTRICAS DO DASHBOARD
+================================== */
+#metrics-container {
+    margin-top: 1rem;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.metric-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.metric-card h3 {
+    color: var(--wayne-yellow);
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+    padding-bottom: 0.5rem;
+}
+
+.metric-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.metric-item:last-child {
+    border-bottom: none;
+}
+
+.metric-label {
+    font-size: 0.9em;
+    color: #ccc;
+}
+
+.metric-value {
+    font-weight: bold;
+    color: var(--wayne-yellow);
+}
+
+.metric-value.success {
+    color: #4CAF50;
+}
+
+.metric-value.warning {
+    color: #FF9800;
+}
+
+.metric-value.danger {
+    color: #F44336;
+}
+
+/* ===============================
+   🦇 ATIVIDADES RECENTES
+================================== */
+.recent-activities {
+    margin-top: 1.5rem;
+}
+
+.recent-activities h3 {
+    color: var(--wayne-yellow);
+    margin-bottom: 1rem;
+}
+
+#activities-list {
+    list-style: none;
+}
+
+.activity-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    border-left: 4px solid var(--wayne-yellow);
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-content strong {
+    color: var(--wayne-yellow);
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.activity-action {
+    color: #e0e0e0;
+    display: block;
+    font-size: 0.9em;
+}
+
+.activity-time {
+    color: #888;
+    font-size: 0.8em;
+}
+
+.activity-badge {
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.activity-badge.acesso {
+    background: #4CAF50;
+    color: white;
+}
+
+.activity-badge.manutencao {
+    background: #FF9800;
+    color: white;
+}
+
+.activity-badge.alerta {
+    background: #F44336;
+    color: white;
+}

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wayne Security Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header>
+        <h1>🦇 Wayne Industries - Painel de Segurança</h1>
+        <button id="logout">Sair</button>
+    </header>
+
+    <main class="dashboard">
+        <section class="card" id="security-status">
+            <h2>Status de Segurança</h2>
+            <p class="status">Carregando...</p>
+        </section>
+
+        <section class="card" id="resources">
+            <h2>Recursos Internos</h2>
+            <ul id="resource-list"></ul>
+        </section>
+
+        <section class="card" id="access-logs">
+            <h2>Atividades Recentes</h2>
+            <div id="metrics-container">
+                <!-- Métricas de Segurança -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <h3>🔒 Segurança</h3>
+                        <div id="security-metrics"></div>
+                    </div>
+                    
+                    <!-- Métricas de Recursos -->
+                    <div class="metric-card">
+                        <h3>📦 Recursos</h3>
+                        <div id="resource-metrics"></div>
+                    </div>
+                </div>
+                
+                <!-- Atividades Recentes -->
+                <div class="recent-activities">
+                    <h3>📋 Últimas Atividades</h3>
+                    <ul id="activities-list"></ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Botão para abrir o gerenciamento (visível apenas para admins) -->
+    <div id="admin-panel" style="display: none;">
+        <button id="btn-manage-resources" class="admin-btn">⚙️ Gerenciar Recursos</button>
+    </div>
+
+    <!-- Modal para Gerenciar Recursos (hidden inicialmente) -->
+    <div id="resource-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>🛠️ Gerenciar Recursos</h2>
+            
+            <div class="modal-actions">
+                <button id="btn-add-resource">➕ Adicionar Recurso</button>
+                <button id="btn-refresh-resources">🔄 Atualizar Lista</button>
+            </div>
+
+            <div id="resource-form" style="display: none;">
+                <h3>Adicionar/Editar Recurso</h3>
+                <form id="resourceForm">
+                    <input type="hidden" id="resource-id">
+                    <input type="text" id="resource-name" placeholder="Nome do recurso" required>
+                    <input type="text" id="resource-access" placeholder="Funções permitidas (ex: administrador,gerente)" required>
+                    <select id="resource-status">
+                        <option value="permitido">Permitido</option>
+                        <option value="restrito">Restrito</option>
+                        <option value="bloqueado">Bloqueado</option>
+                    </select>
+                    <div class="form-buttons">
+                        <button type="submit">Salvar</button>
+                        <button type="button" id="btn-cancel">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="resources-list-container">
+                <h3>Recursos Existentes</h3>
+                <ul id="admin-resource-list"></ul>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Wayne Enterprises. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        // ==========================================================
+        // 🔹 DASHBOARD PRINCIPAL
+        // ==========================================================
+        
+        // Verifica token antes de carregar o dashboard
+        const token = localStorage.getItem("token");
+        if (!token) {
+            alert("Acesso negado! Faça login novamente.");
+            window.location.href = "index.html";
+        }
+
+        // Logout
+        document.getElementById("logout").addEventListener("click", () => {
+            localStorage.removeItem("token");
+            window.location.href = "index.html";
+        });
+
+        // Carregar dados iniciais do dashboard
+        fetch("http://localhost:5000/api/areas", {
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        })
+        .then(r => r.json())
+        .then(data => {
+            const status = document.querySelector(".status");
+            status.textContent = "✅ Acesso autenticado como " + data.funcao;
+
+            const lista = document.getElementById("resource-list");
+            data.areas_acessiveis.forEach(a => {
+                const li = document.createElement("li");
+                li.textContent = `${a.nome_area} — ${a.nivel_acesso}`;
+                lista.appendChild(li);
+            });
+            
+            // 🔥 CARREGAR MÉTRICAS DO DASHBOARD
+            loadDashboardMetrics();
+            
+            // Verificar se é admin DEPOIS de carregar os dados
+            checkAdminPermissions(data.funcao);
+        })
+        .catch(err => {
+            console.error("Erro:", err);
+            document.querySelector(".status").textContent = "❌ Erro ao carregar dados.";
+        });
+
+        // ==========================================================
+        // 🔹 CARREGAR MÉTRICAS DO DASHBOARD
+        // ==========================================================
+
+        async function loadDashboardMetrics() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('http://localhost:5000/api/metricas', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+
+                if (!response.ok) throw new Error('Erro ao carregar métricas');
+
+                const data = await response.json();
+                displayDashboardMetrics(data);
+                
+            } catch (error) {
+                console.error('Erro ao carregar métricas:', error);
+            }
+        }
+
+        // Exibir métricas no dashboard
+        function displayDashboardMetrics(data) {
+            // Métricas de Segurança
+            const securityMetrics = document.getElementById('security-metrics');
+            if (securityMetrics && data.metricas_seguranca) {
+                securityMetrics.innerHTML = `
+                    <div class="metric-item">
+                        <span class="metric-label">Tentativas de Acesso:</span>
+                        <span class="metric-value">${data.metricas_seguranca.tentativas_acesso_total}</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Acessos Bem-sucedidos:</span>
+                        <span class="metric-value success">${data.metricas_seguranca.acessos_bem_sucedidos}</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Tentativas Falhas:</span>
+                        <span class="metric-value warning">${data.metricas_seguranca.tentativas_falhas}</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Incidentes:</span>
+                        <span class="metric-value danger">${data.metricas_seguranca.incidentes_seguranca}</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Uptime do Sistema:</span>
+                        <span class="metric-value">${data.metricas_seguranca.tempo_operacional_sistema}</span>
+                    </div>
+                `;
+            }
+
+            // Métricas de Recursos
+            const resourceMetrics = document.getElementById('resource-metrics');
+            if (resourceMetrics && data.metricas_recursos) {
+                resourceMetrics.innerHTML = `
+                    <div class="metric-item">
+                        <span class="metric-label">Total de Equipamentos:</span>
+                        <span class="metric-value">${data.metricas_recursos.total_equipamentos}</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Operacionais:</span>
+                        <span class="metric-value success">${data.metricas_recursos.equipamentos_operacionais}</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Em Manutenção:</span>
+                        <span class="metric-value warning">${data.metricas_recursos.equipamentos_manutencao}</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Veículos Disponíveis:</span>
+                        <span class="metric-value">${data.metricas_recursos.veiculos_disponiveis}</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">Taxa de Utilização:</span>
+                        <span class="metric-value">${data.metricas_recursos.taxa_utilizacao_recursos}</span>
+                    </div>
+                `;
+            }
+
+            // Atividades Recentes
+            const activitiesList = document.getElementById('activities-list');
+            if (activitiesList && data.atividades_recentes) {
+                activitiesList.innerHTML = '';
+                data.atividades_recentes.forEach(activity => {
+                    const li = document.createElement('li');
+                    li.className = 'activity-item';
+                    li.innerHTML = `
+                        <div class="activity-content">
+                            <strong>${activity.usuario}</strong>
+                            <span class="activity-action">${activity.acao}</span>
+                            <small class="activity-time">${activity.data_hora}</small>
+                        </div>
+                        <span class="activity-badge ${activity.tipo}">${activity.tipo}</span>
+                    `;
+                    activitiesList.appendChild(li);
+                });
+            }
+        }
+
+        // 🔹 SISTEMA DE GERENCIAMENTO DE RECURSOS
+        
+        // Verificar se usuário é admin e mostrar painel
+        function checkAdminPermissions(funcaoUsuario) {
+            console.log("Função do usuário:", funcaoUsuario);
+            
+            if (funcaoUsuario === 'administrador' || funcaoUsuario === 'admin_seguranca') {
+                const adminPanel = document.getElementById('admin-panel');
+                if (adminPanel) {
+                    adminPanel.style.display = 'block';
+                    console.log("Painel admin mostrado!");
+                    initializeAdminPanel();
+                }
+            }
+        }
+
+        // Inicializar o painel administrativo
+        function initializeAdminPanel() {
+            console.log("Inicializando painel admin...");
+            
+            const manageBtn = document.getElementById('btn-manage-resources');
+            const resourceModal = document.getElementById('resource-modal');
+            const closeModal = document.querySelector('.close');
+            const addResourceBtn = document.getElementById('btn-add-resource');
+            const refreshBtn = document.getElementById('btn-refresh-resources');
+            const resourceForm = document.getElementById('resource-form');
+            const resourceListContainer = document.getElementById('admin-resource-list');
+            const resourceFormElement = document.getElementById('resourceForm');
+            const cancelBtn = document.getElementById('btn-cancel');
+
+            // Abrir modal de gerenciamento
+            if (manageBtn) {
+                manageBtn.addEventListener('click', () => {
+                    console.log("Abrindo modal...");
+                    resourceModal.style.display = 'block';
+                    loadResourcesList();
+                });
+            }
+
+            // Fechar modal
+            if (closeModal) {
+                closeModal.addEventListener('click', () => {
+                    resourceModal.style.display = 'none';
+                    resetForm();
+                });
+            }
+
+            // Fechar modal clicando fora
+            window.addEventListener('click', (e) => {
+                if (e.target === resourceModal) {
+                    resourceModal.style.display = 'none';
+                    resetForm();
+                }
+            });
+
+            // Mostrar formulário para adicionar recurso
+            if (addResourceBtn) {
+                addResourceBtn.addEventListener('click', () => {
+                    resourceForm.style.display = 'block';
+                    resourceListContainer.style.display = 'none';
+                });
+            }
+
+            // Atualizar lista de recursos
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', loadResourcesList);
+            }
+
+            // Cancelar formulário
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', () => {
+                    resetForm();
+                    resourceForm.style.display = 'none';
+                    resourceListContainer.style.display = 'block';
+                });
+            }
+
+            // Adicionar/Editar recurso
+            if (resourceFormElement) {
+                resourceFormElement.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const token = localStorage.getItem('token');
+                    const resourceId = document.getElementById('resource-id').value;
+                    const resourceName = document.getElementById('resource-name').value;
+                    const resourceAccess = document.getElementById('resource-access').value;
+
+                    // Converter funções para array
+                    const funcoesArray = resourceAccess.split(',').map(f => f.trim().toLowerCase());
+
+                    const resourceData = {
+                        id: resourceId || resourceName.toLowerCase().replace(/ /g, '-'),
+                        funcoes_permitidas: funcoesArray
+                    };
+
+                    try {
+                        const url = resourceId 
+                            ? `http://localhost:5000/api/admin/recursos/${resourceId}`
+                            : 'http://localhost:5000/api/admin/recursos';
+                        
+                        const method = resourceId ? 'PUT' : 'POST';
+
+                        const response = await fetch(url, {
+                            method: method,
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Bearer ' + token
+                            },
+                            body: JSON.stringify(resourceData)
+                        });
+
+                        if (!response.ok) throw new Error('Erro ao salvar recurso');
+
+                        const result = await response.json();
+                        alert(result.mensagem);
+                        
+                        resetForm();
+                        loadResourcesList();
+                        resourceForm.style.display = 'none';
+                        resourceListContainer.style.display = 'block';
+                        
+                    } catch (error) {
+                        console.error('Erro:', error);
+                        alert('Erro ao salvar recurso: ' + error.message);
+                    }
+                });
+            }
+
+            console.log("Painel admin inicializado!");
+        }
+
+        // Carregar lista de recursos
+        async function loadResourcesList() {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('http://localhost:5000/api/admin/recursos', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+
+                if (!response.ok) throw new Error('Erro ao carregar recursos');
+
+                const data = await response.json();
+                displayResourcesList(data.recursos);
+                
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro ao carregar recursos: ' + error.message);
+            }
+        }
+
+        // Exibir lista de recursos
+        function displayResourcesList(recursos) {
+            const resourceListContainer = document.getElementById('admin-resource-list');
+            if (!resourceListContainer) return;
+            
+            resourceListContainer.innerHTML = '';
+            
+            recursos.forEach(recurso => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <div>
+                        <strong>${recurso.nome}</strong><br>
+                        <small>Funções: ${recurso.nivel_acesso}</small>
+                    </div>
+                    <div class="resource-actions">
+                        <button class="btn-edit" onclick="editResource('${recurso.id}')">✏️ Editar</button>
+                        <button class="btn-delete" onclick="deleteResource('${recurso.id}')">🗑️ Remover</button>
+                    </div>
+                `;
+                resourceListContainer.appendChild(li);
+            });
+        }
+
+        // Editar recurso
+        window.editResource = async function(resourceId) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch('http://localhost:5000/api/admin/recursos', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+
+                if (!response.ok) throw new Error('Erro ao carregar recursos');
+
+                const data = await response.json();
+                const recurso = data.recursos.find(r => r.id === resourceId);
+                
+                if (recurso) {
+                    document.getElementById('resource-id').value = recurso.id;
+                    document.getElementById('resource-name').value = recurso.nome;
+                    document.getElementById('resource-access').value = recurso.funcoes_permitidas.join(', ');
+                    
+                    document.getElementById('resource-form').style.display = 'block';
+                    document.getElementById('resources-list-container').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro ao carregar recurso: ' + error.message);
+            }
+        }
+
+        // Excluir recurso
+        window.deleteResource = async function(resourceId) {
+            if (!confirm('Tem certeza que deseja remover este recurso?')) return;
+
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`http://localhost:5000/api/admin/recursos/${resourceId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                });
+
+                if (!response.ok) throw new Error('Erro ao remover recurso');
+
+                const result = await response.json();
+                alert(result.mensagem);
+                loadResourcesList();
+                
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro ao remover recurso: ' + error.message);
+            }
+        }
+
+        // Resetar formulário
+        function resetForm() {
+            const resourceFormElement = document.getElementById('resourceForm');
+            if (resourceFormElement) {
+                resourceFormElement.reset();
+                document.getElementById('resource-id').value = '';
+            }
+        }
+    </script>
+</body>
+</html>
