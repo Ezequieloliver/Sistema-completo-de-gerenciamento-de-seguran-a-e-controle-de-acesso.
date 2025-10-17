@@ -2,6 +2,8 @@
 Sistema completo de gerenciamento de segurança e controle de acesso para as Indústrias Wayne, desenvolvido com Flask no backend e JavaScript vanilla no frontend.
 
 
+<img width="930" height="905" alt="image" src="https://github.com/user-attachments/assets/fcda76af-7e67-4771-80d9-6646e6c47ddb" />
+
 🦇 Wayne Industries - Sistema de Segurança
 
 Sistema completo de gerenciamento de segurança e controle de acesso para as Indústrias Wayne, desenvolvido com Flask no backend e JavaScript vanilla no frontend.
@@ -24,6 +26,8 @@ API Endpoints
 Desenvolvimento
 
 Contribuição
+
+<img width="930" height="905" alt="image" src="https://github.com/user-attachments/assets/9ccde0cf-8cbb-4a61-a1ab-57d0216482cd" />
 
 🎯 Visão Geral
 O Sistema Wayne Industries é uma plataforma de segurança corporativa que oferece:
